@@ -1,166 +1,160 @@
 # LangChain 系统化学习
 
-基于 [LangChain 中文文档 v1](https://langchain-doc.cn/v1/python/) 的完整学习路径。
+基于 [LangChain 中文文档 v1](https://langchain-doc.cn/v1/python/) 的完整学习路径，从核心概念到 Agent 系统实战。
+
+## 目录
+
+- [学习计划](#学习计划)
+- [项目结构](#项目结构)
+- [快速开始](#快速开始)
+- [VS Code 配置详解](#vs-code-配置详解)
+- [启动调试](#启动调试)
+- [Notebook 说明](#notebook-说明)
+- [常见问题](#常见问题)
+- [学习建议](#学习建议)
+- [参考链接](#参考链接)
+
+---
 
 ## 学习计划
 
-```mermaid
-gantt
-    title LangChain 学习路线图
-    dateFormat  YYYY-MM-DD
-    section 第一阶段 核心组件
-    Chat Models & Messages      :a1, 3d
-    Prompt Templates & Output   :a2, 2d
-    Tools & Structured Output   :a3, 2d
-    Streaming & Middleware      :a4, 2d
-    section 第二阶段 检索与记忆
-    Document Loaders & Splitters :b1, 2d
-    Embeddings & VectorStore    :b2, 2d
-    Retrieval & RAG             :b3, 3d
-    Long-term Memory            :b4, 2d
-    section 第三阶段 LangGraph
-    StateGraph & Conditional    :c1, 3d
-    Subgraphs & Time Travel     :c2, 2d
-    Persistence & Checkpoint    :c3, 2d
-    Streaming & Interrupts      :c4, 2d
-    section 第四阶段 Agent 系统
-    Tool Calling Agent          :d1, 2d
-    Multi-agent Systems         :d2, 3d
-    Human-in-the-Loop           :d3, 2d
-    MCP Protocol                :d4, 2d
-    section 第五阶段 生产与实战
-    Testing & Observability     :e1, 2d
-    Deploy & LangGraph Studio   :e2, 2d
-    Agentic RAG 实战            :e3, 3d
-    SQL Agent 实战              :e4, 3d
+```
+第一阶段 ────────────────────── 约 9 天
+    Chat Models & Messages         ████████████████ 3d
+    Prompt Templates & Output      ██████████       2d
+    Tools & Structured Output      ██████████       2d
+    Streaming & Middleware         ██████████       2d
+
+第二阶段 ────────────────────── 约 9 天
+    Document Loaders & Splitters   ██████████       2d
+    Embeddings & VectorStore       ██████████       2d
+    Retrieval & RAG                ████████████████ 3d
+    Long-term Memory               ██████████       2d
+
+第三阶段 ────────────────────── 约 9 天
+    StateGraph & Conditional       ████████████████ 3d
+    Subgraphs & Time Travel        ██████████       2d
+    Persistence & Checkpoint       ██████████       2d
+    Streaming & Interrupts         ██████████       2d
+
+第四阶段 ────────────────────── 约 9 天
+    Tool Calling Agent             ██████████       2d
+    Multi-agent Systems            ████████████████ 3d
+    Human-in-the-Loop              ██████████       2d
+    MCP Protocol                   ██████████       2d
+
+第五阶段 ────────────────────── 约 10 天
+    Testing & Observability        ██████████       2d
+    Deploy & LangGraph Studio      ██████████       2d
+    Agentic RAG 实战               ████████████████ 3d
+    SQL Agent 实战                 ████████████████ 3d
 ```
 
 ---
 
-## 第一阶段：核心组件（LangChain Core）
+## 项目结构
 
-对标官方文档 [LangChain > Overview](https://langchain-doc.cn/v1/python/langchain/overview.html) 和 Core Components。
-
-| 模块 | 内容 | 参考文档 |
-|------|------|----------|
-| **Chat Models** | 多模型调用、消息体系（System/Human/AI）、多供应商切换 | Models, Messages |
-| **Prompt Templates** | 模板变量、FewShot、ChatPromptTemplate | - |
-| **Output Parsers** | StrOutputParser、PydanticOutputParser、结构化输出 | Structured Output |
-| **Tools** | @tool 装饰器、Tool 类、参数 schema | Tools |
-| **Streaming** | 同步/异步流式、事件流 | Streaming |
-| **Middleware** | 请求拦截、日志、速率限制 | Middleware |
-
-**练习项目**：多模型对话 CLI
-
----
-
-## 第二阶段：检索增强生成（RAG）
-
-对标文档的 Retrieval 和长期记忆。
-
-| 模块 | 内容 | 参考文档 |
-|------|------|----------|
-| **Document Loaders** | PDF/HTML/CSV/Web 加载器 | Retrieval |
-| **Text Splitters** | RecursiveCharacter、语义分割 | Retrieval |
-| **Embeddings** | OpenAI/TexteEmbedding、自定义 | Retrieval |
-| **Vector Stores** | ChromaDB、FAISS、检索策略（MMR/阈值） | Retrieval |
-| **RAG Chain** | 上下文压缩、MultiQuery 检索、RAPTOR | Retrieval |
-| **Long-term Memory** | 持久化记忆、对话摘要 | Long-term Memory |
-
-**练习项目**：本地 PDF 知识库问答机器人
+```
+langchain-learning/
+├── notebooks/                  # Jupyter Notebook（主学习入口）
+│   └── 01-core-concepts/       # 第一阶段：核心组件
+│       ├── 01-chat-models.ipynb       # Chat Models 消息体系
+│       ├── 02-prompt-parsers.ipynb    # Prompt 模板与输出解析器
+│       └── 03-lcel.ipynb              # LCEL 表达式语言
+├── src/
+│   └── langchain_learning/     # 项目工具包（已安装为可编辑包）
+│       ├── __init__.py
+│       └── llm.py              # get_llm() 统一获取 LLM 实例
+├── scripts/                    # Python 脚本（适合 LangGraph 等复杂场景）
+├── .env                        # API Key 配置文件（不要提交到 git）
+├── .env.example                # 环境变量模板
+├── pyproject.toml              # 项目配置与依赖
+└── README.md
+```
 
 ---
-
-## 第三阶段：LangGraph
-
-对标 [LangGraph 官方文档](https://langchain-doc.cn/v1/python/langgraph/overview.html)。
-
-| 模块 | 内容 | 参考文档 |
-|------|------|----------|
-| **Graph API** | StateGraph、Node、Edge、条件路由 | Graph API |
-| **Functional API** | 函数式编排（轻量） | Functional API |
-| **Subgraphs** | 子图组合、嵌套流程 | Subgraphs |
-| **Time Travel** | 状态回溯、分支恢复 | Time Travel |
-| **Persistence** | Checkpointer、MemorySaver、SQLite/Postgres | Persistence |
-| **Streaming** | 节点级流式、自定义事件 | Streaming |
-| **Interrupts** | 断点、人工介入点 | Interrupts |
-
-**练习项目**：带人工审核的多步写作工作流
-
----
-
-## 第四阶段：Agent 系统
-
-对标文档的 Agents、Multi-agent、Human-in-the-Loop、MCP。
-
-| 模块 | 内容 | 参考文档 |
-|------|------|----------|
-| **Tool Calling Agent** | create_tool_calling_agent、AgentExecutor | Agents |
-| **Custom Agent** | 自定义 prompt、工具选择逻辑 | Agents |
-| **Multi-agent** | Supervisor、协作模式、竞争模式 | Multi-agent |
-| **Human-in-the-Loop** | 审批节点、人工反馈 | Human-in-the-Loop |
-| **MCP** | 模型上下文协议、工具发现 | MCP |
-| **Guardrails** | 输入/输出守卫、安全边界 | Guardrails |
-
-**练习项目**：多 Agent 协作的研究助手
-
----
-
-## 第五阶段：生产化与实战
-
-对标文档的 Production、DeepAgents。
-
-| 模块 | 内容 | 参考文档 |
-|------|------|----------|
-| **Testing** | 单元测试、回归测试、LangSmith 评估 | Test |
-| **Observability** | 链路追踪、LangSmith trace | Observability |
-| **Deploy** | LangGraph Cloud/Server 部署 | Deploy |
-| **Studio** | 可视化调试 | Studio |
-| **DeepAgents** | 子Agent、长期记忆、自定义Agent框架 | DeepAgents |
-| **Agentic RAG** | 带推理的 RAG 代理 | Agentic RAG |
-| **SQL Agent** | 自然语言查库 | SQL Agent |
-
-**实战项目 1**：Agentic RAG 问答系统（PDF + 推理）
-**实战项目 2**：自然语言 SQL 查询 Agent
-
----
-
-## 技术栈
-
-- Python 3.11+（由 UV 管理）
-- **模型：DeepSeek**（deepseek-chat / deepseek-reasoner，OpenAI 兼容 API）
-- LangChain Core / LangChain-Community 0.3.x
-- LangGraph 0.4.x
-- LangSmith 0.3.x
-- ChromaDB（本地向量数据库）
 
 ## 快速开始
 
-```bash
-# 配置 UV（确保已安装）
-# brew install uv
+### 前置要求
 
-# 创建虚拟环境并安装依赖
+- Python 3.11+
+- [UV](https://docs.astral.sh/uv/)（推荐）或 pip
+
+### 安装步骤
+
+```bash
+# 1. 克隆项目
+git clone <repo-url>
+cd langchain-learning
+
+# 2. 创建虚拟环境并安装依赖
 uv sync
 
-# 将项目安装为可编辑包（VS Code 打开 .ipynb 时需要）
+# 3. 将项目安装为可编辑包（关键！否则 Notebook 无法导入）
 uv pip install -e .
 
-# 配置环境变量
+# 4. 配置环境变量
 cp .env.example .env
 # 编辑 .env 填入你的 DEEPSEEK_API_KEY
 ```
+
+> **注意**：第 3 步 `uv pip install -e .` 是必须的，否则 Notebook 中 `from langchain_learning.llm import get_llm` 会报 `ModuleNotFoundError`。
+
+---
+
+## VS Code 配置详解
+
+本项目使用 Jupyter Notebook（`.ipynb`），**推荐使用 VS Code 打开**，无需单独启动 Jupyter 服务。
+
+### 第一步：在 VS Code 中打开项目
+
+```bash
+# 终端中进入项目目录
+cd langchain-learning
+code .
+```
+
+### 第二步：选择 Python 解释器（关键！）
+
+VS Code 需要知道使用哪个 Python 环境（.venv 还是系统 Python）：
+
+**方法 A：通过命令面板设置（推荐，全局生效）**
+
+1. 按 `Cmd+Shift+P` 打开命令面板
+2. 输入并选择 **`Python: Select Interpreter`**
+3. 从列表中选择 **`.venv/bin/python`**（路径包含 `.venv` 的那个）
+4. 如果没有出现，选择 **`Enter interpreter path`** → 手动输入 `./.venv/bin/python`
+
+**方法 B：通过 Notebook 内核选择（仅对当前文件生效）**
+
+1. 打开任意 `.ipynb` 文件
+2. 点击编辑器右上角的 **内核名称**（可能显示 "Python 3.x"）
+3. 选择 **`.venv`** 对应的 Python 环境
+
+### 第三步：验证配置
+
+打开 `notebooks/01-core-concepts/01-chat-models.ipynb`，运行第一个代码单元格：
+
+```python
+from langchain_learning.llm import get_llm
+llm = get_llm()
+```
+
+如果输出 **没有报错**，说明环境配置成功。
+
+---
 
 ## 启动调试
 
 ### 方式一：VS Code（推荐）
 
-直接打开 `.ipynb` 文件运行，无需启动 Jupyter 服务。
+直接打开 `.ipynb` 文件，点击单元格左侧的 ▶ 运行按钮，或按 `Shift+Enter`。
 
-**注意事项**：
-- 打开 `.ipynb` 后选择 Kernel → Python Environments → 选择 `.venv` 下的 Python
-- 首次运行前先执行 `uv pip install -e .` 确保包可导入
-- 如果 Kernel 找不到 `.venv`，手动选择：`./.venv/bin/python`
+**快捷键**：
+- `Shift+Enter` — 运行当前单元格并跳到下一个
+- `Ctrl+Enter` — 运行当前单元格并停留在原地
+- `Option+Enter` — 运行当前单元格并在下方插入新单元格
 
 ### 方式二：Jupyter Notebook 服务
 
@@ -168,57 +162,95 @@ cp .env.example .env
 # 启动 Jupyter
 uv run jupyter notebook
 ```
+
 浏览器打开后进入 `notebooks/` 目录，按编号顺序运行。
 
-**调试技巧**：
-- `Shift+Enter` 运行当前单元格并跳到下一个
-- 在代码单元格末尾不加 `print()`，变量值会自动显示
-- 报错时修改代码重新运行即可，不需要重启 Kernel
-
-### 方式二：Python 脚本（适合 LangGraph 和实战）
+### 方式三：Python 脚本
 
 适合第三、五阶段。
 
 ```bash
-# 运行 Notebook（用 jupytext 或 uv run python 直接跑 .py 文件）
 uv run python scripts/05-langgraph/01-state-graph.py
 ```
 
-### 验证环境
+---
 
-```python
-# 在 Jupyter 或终端中运行
-from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+## Notebook 说明
 
-load_dotenv()
+### 代码单元格
 
-# DeepSeek 是 OpenAI 兼容 API
-llm = ChatOpenAI(
-    model="deepseek-chat",
-    api_key="sk-your-deepseek-api-key",
-    base_url="https://api.deepseek.com",
-    temperature=0,
-)
+每个 Notebook 包含三种类型的单元格：
 
-print(llm.invoke("Hello!").content)
-```
+| 类型 | 说明 |
+|------|------|
+| **代码单元格** | 可执行的 Python 代码，点击 ▶ 运行 |
+| **Markdown（标题）** | `###` 开头的章节标题 |
+| **Markdown（说明）** | 含 **术语：** 标签的解释文字，含代码示例和 Mermaid 流程图 |
 
-> **注意**：DeepSeek 兼容 OpenAI SDK，所以用 `langchain_openai`/`ChatOpenAI` 包，只需修改 `base_url` 和 `api_key`。
-> 模型名：`deepseek-chat` = DeepSeek V3，`deepseek-reasoner` = DeepSeek R1。
+### 术语说明
 
-### 查看追踪（可选）
+每个代码单元格下方有一段以 **术语：** 开头的解释，对初学者友好，例如：
 
-开启 LangSmith 后可看到每次调用的完整链路：
+> **术语：**
+> - **LLM** = Large Language Model（大语言模型），如 ChatGPT、DeepSeek
+> - **invoke** = "调用"，让 LLM 处理输入并返回结果
+> - **.content** = LLM 返回的消息对象中的文本内容
 
+### Mermaid 流程图
+
+部分说明包含 Mermaid 图表（如 LCEL 链式调用流程图），VS Code 可以直接渲染显示。
+
+---
+
+## 常见问题
+
+### 1. `ModuleNotFoundError: No module named 'src'`
+
+**原因**：导入路径用了 `src.langchain_learning`，应改为 `langchain_learning`。
+
+**解决**：
 ```bash
-# 1. 去 https://smith.langchain.com 注册获取 API Key
-# 2. 填入 .env 的 LANGSMITH_API_KEY
-# 3. 开启 tracing
-export LANGSMITH_TRACING=true
+uv pip install -e .    # 确保包已安装
+```
+然后在代码中将 `from src.langchain_learning` 改为 `from langchain_learning`。
+
+### 2. 无法解析导入 "langchain_core"
+
+**原因**：VS Code 使用了系统 Python（未安装 langchain），而不是项目的 `.venv`。
+
+**解决**：按上方 [VS Code 配置详解](#vs-code-配置详解) 的步骤选择 `.venv/bin/python` 作为解释器。
+
+### 3. LangChainDeprecationWarning（pydantic v1）
+
+```
+LangChainDeprecationWarning: As of langchain-core 0.3.0, LangChain uses pydantic v2 internally.
 ```
 
-所有 Notebook 和脚本都会自动上报 trace，方便调试。web界面查看：https://smith.langchain.com
+**原因**：代码中使用了 `from langchain_core.pydantic_v1 import ...`。
+
+**解决**：将导入改为 `from pydantic import BaseModel, Field`（已修复）。
+
+### 4. LangSmith 403 Forbidden 错误
+
+```
+Failed to POST https://api.smith.langchain.com/runs/multipart
+HTTPError('403 Client Error: Forbidden')
+```
+
+**原因**：`LANGSMITH_API_KEY` 无效或未配置，但 LLM 调用本身不受影响。
+
+**解决**（任选一种）：
+- 去 [smith.langchain.com](https://smith.langchain.com) 获取有效 API Key 填入 `.env`
+- 或关闭追踪：`.env` 中设置 `LANGSMITH_TRACING=false`
+
+### 5. VS Code 中 Notebook 内核一直显示 "连接中"
+
+**原因**：Jupyter 内核启动超时或 Python 解释器路径不对。
+
+**解决**：
+1. 重启 VS Code
+2. `Cmd+Shift+P` → `Developer: Reload Window`
+3. 重新选择解释器：`Cmd+Shift+P` → `Python: Select Interpreter` → `.venv/bin/python`
 
 ---
 
@@ -226,8 +258,9 @@ export LANGSMITH_TRACING=true
 
 1. **按顺序学**：每个阶段依赖前一阶段的概念
 2. **边学边写**：每看完一个模块，立刻写代码验证
-3. **用 LangSmith 追踪**：所有示例都建议开启 tracing，观察每一步的执行
+3. **术语优先**：每个 Notebook 都标注了关键术语，先理解术语再看代码
 4. **先 LCEL，再 LangGraph**：LCEL 是基础，LangGraph 是进阶编排
+5. **有问题先看常见问题**：大部分环境问题在上方都有说明
 
 ## 参考链接
 
@@ -235,3 +268,4 @@ export LANGSMITH_TRACING=true
 - [LangChain 官方文档](https://python.langchain.com/)
 - [LangGraph 文档](https://langchain-ai.github.io/langgraph/)
 - [LangSmith](https://smith.langchain.com/)
+- [DeepSeek 平台](https://platform.deepseek.com/)
