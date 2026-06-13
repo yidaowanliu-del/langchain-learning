@@ -144,11 +144,74 @@ uv sync
 
 # 配置环境变量
 cp .env.example .env
-# 编辑 .env 填入你的 OPENAI_API_KEY
-
-# 运行示例
-uv run python 01-core-concepts/01-chat-models.py
+# 编辑 .env 填入你的 API Key（OpenAI 或 DeepSeek 至少填一个）
 ```
+
+## 启动调试
+
+### 方式一：Jupyter Notebook（推荐学习阶段使用）
+
+适合第一、二、四阶段，逐单元格运行，即时看结果。
+
+```bash
+# 启动 Jupyter
+uv run jupyter notebook
+```
+浏览器打开后进入 `notebooks/` 目录，按编号顺序运行。
+
+**调试技巧**：
+- `Shift+Enter` 运行当前单元格并跳到下一个
+- 在代码单元格末尾不加 `print()`，变量值会自动显示
+- 报错时修改代码重新运行即可，不需要重启 Kernel
+
+### 方式二：Python 脚本（适合 LangGraph 和实战）
+
+适合第三、五阶段。
+
+```bash
+# 运行 Notebook（用 jupytext 或 uv run python 直接跑 .py 文件）
+uv run python scripts/05-langgraph/01-state-graph.py
+```
+
+### 验证环境
+
+```python
+# 在 Jupyter 或终端中运行
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+import os
+
+load_dotenv()
+
+# 自动选择可用的 API
+if os.getenv("OPENAI_API_KEY") and os.getenv("OPENAI_API_KEY") != "sk-your-openai-key-here":
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+elif os.getenv("DEEPSEEK_API_KEY") and os.getenv("DEEPSEEK_API_KEY") != "sk-your-deepseek-key-here":
+    llm = ChatOpenAI(
+        model="deepseek-chat",
+        api_key=os.getenv("DEEPSEEK_API_KEY"),
+        base_url="https://api.deepseek.com",
+    )
+else:
+    raise ValueError("请先在 .env 中配置 OPENAI_API_KEY 或 DEEPSEEK_API_KEY")
+
+print(llm.invoke("Hello!").content)
+```
+
+### 查看追踪（可选）
+
+开启 LangSmith 后可看到每次调用的完整链路：
+
+```bash
+# 1. 去 https://smith.langchain.com 注册获取 API Key
+# 2. 填入 .env 的 LANGSMITH_API_KEY
+# 3. 开启 tracing
+export LANGSMITH_TRACING=true
+```
+
+所有 Notebook 和脚本都会自动上报 trace，方便调试。web界面查看：https://smith.langchain.com
+
+---
 
 ## 学习建议
 
