@@ -128,6 +128,7 @@ gantt
 ## 技术栈
 
 - Python 3.11+（由 UV 管理）
+- **模型：DeepSeek**（deepseek-chat / deepseek-reasoner，OpenAI 兼容 API）
 - LangChain Core / LangChain-Community 0.3.x
 - LangGraph 0.4.x
 - LangSmith 0.3.x
@@ -144,7 +145,7 @@ uv sync
 
 # 配置环境变量
 cp .env.example .env
-# 编辑 .env 填入你的 API Key（OpenAI 或 DeepSeek 至少填一个）
+# 编辑 .env 填入你的 DEEPSEEK_API_KEY
 ```
 
 ## 启动调试
@@ -179,24 +180,22 @@ uv run python scripts/05-langgraph/01-state-graph.py
 # 在 Jupyter 或终端中运行
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-import os
 
 load_dotenv()
 
-# 自动选择可用的 API
-if os.getenv("OPENAI_API_KEY") and os.getenv("OPENAI_API_KEY") != "sk-your-openai-key-here":
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-elif os.getenv("DEEPSEEK_API_KEY") and os.getenv("DEEPSEEK_API_KEY") != "sk-your-deepseek-key-here":
-    llm = ChatOpenAI(
-        model="deepseek-chat",
-        api_key=os.getenv("DEEPSEEK_API_KEY"),
-        base_url="https://api.deepseek.com",
-    )
-else:
-    raise ValueError("请先在 .env 中配置 OPENAI_API_KEY 或 DEEPSEEK_API_KEY")
+# DeepSeek 是 OpenAI 兼容 API
+llm = ChatOpenAI(
+    model="deepseek-chat",
+    api_key="sk-your-deepseek-api-key",
+    base_url="https://api.deepseek.com",
+    temperature=0,
+)
 
 print(llm.invoke("Hello!").content)
 ```
+
+> **注意**：DeepSeek 兼容 OpenAI SDK，所以用 `langchain_openai`/`ChatOpenAI` 包，只需修改 `base_url` 和 `api_key`。
+> 模型名：`deepseek-chat` = DeepSeek V3，`deepseek-reasoner` = DeepSeek R1。
 
 ### 查看追踪（可选）
 
