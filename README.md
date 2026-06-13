@@ -143,6 +143,9 @@ gantt
 # 创建虚拟环境并安装依赖
 uv sync
 
+# 将项目安装为可编辑包（VS Code 打开 .ipynb 时需要）
+uv pip install -e .
+
 # 配置环境变量
 cp .env.example .env
 # 编辑 .env 填入你的 DEEPSEEK_API_KEY
@@ -150,9 +153,16 @@ cp .env.example .env
 
 ## 启动调试
 
-### 方式一：Jupyter Notebook（推荐学习阶段使用）
+### 方式一：VS Code（推荐）
 
-适合第一、二、四阶段，逐单元格运行，即时看结果。
+直接打开 `.ipynb` 文件运行，无需启动 Jupyter 服务。
+
+**注意事项**：
+- 打开 `.ipynb` 后选择 Kernel → Python Environments → 选择 `.venv` 下的 Python
+- 首次运行前先执行 `uv pip install -e .` 确保包可导入
+- 如果 Kernel 找不到 `.venv`，手动选择：`./.venv/bin/python`
+
+### 方式二：Jupyter Notebook 服务
 
 ```bash
 # 启动 Jupyter
