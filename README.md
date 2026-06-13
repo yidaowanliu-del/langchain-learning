@@ -60,7 +60,10 @@ langchain-learning/
 │   └── 01-core-concepts/       # 第一阶段：核心组件
 │       ├── 01-chat-models.ipynb       # Chat Models 消息体系
 │       ├── 02-prompt-parsers.ipynb    # Prompt 模板与输出解析器
-│       └── 03-lcel.ipynb              # LCEL 表达式语言
+│       ├── 03-lcel.ipynb              # LCEL 表达式语言
+│       ├── 04-tools.ipynb             # 工具定义与调用
+│       ├── 05-streaming.ipynb         # 流式输出与事件流
+│       └── 06-middleware.ipynb        # 中间件与回调
 ├── src/
 │   └── langchain_learning/     # 项目工具包（已安装为可编辑包）
 │       ├── __init__.py
