@@ -58,6 +58,7 @@
 langchain-learning/
 ├── notebooks/                  # Jupyter Notebook（主学习入口）
 │   └── 01-core-concepts/       # 第一阶段：核心组件
+│       ├── 00-langchain-overview.ipynb # LangChain 概览与架构
 │       ├── 01-chat-models.ipynb       # Chat Models 消息体系
 │       ├── 02-prompt-parsers.ipynb    # Prompt 模板与输出解析器
 │       ├── 03-lcel.ipynb              # LCEL 表达式语言
