@@ -63,7 +63,8 @@ langchain-learning/
 │       ├── 03-lcel.ipynb              # LCEL 表达式语言
 │       ├── 04-tools.ipynb             # 工具定义与调用
 │       ├── 05-streaming.ipynb         # 流式输出与事件流
-│       └── 06-middleware.ipynb        # 中间件与回调
+│       ├── 06-middleware.ipynb        # 中间件与回调
+│       └── 07-agent.ipynb            # create_agent 智能体
 ├── src/
 │   └── langchain_learning/     # 项目工具包（已安装为可编辑包）
 │       ├── __init__.py
