@@ -81,7 +81,7 @@ langchain-learning/
 
 ### 前置要求
 
-- Python 3.11+
+- Python 3.12+
 - [UV](https://docs.astral.sh/uv/)（推荐）或 pip
 
 ### 安装步骤
